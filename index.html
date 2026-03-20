@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LampLabs</title>
+    <link rel="icon" href="logo_lamplabs.webp" type="image/webp" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Nunito:wght@400;600;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --gold: #d1a94a;
+        --gold-light: #fdd983;
+        --black: #0a0a0a;
+        --orange: #f97316;
+        --orange-dark: #ea6c0a;
+        --purple: #a855f7;
+        --purple-dark: #7723a4;
+        --indigo: #1e1b4b;
+        --white: #ffffff;
+        --gray: #e2e2e2;
+      }
+      html,
+      body {
+        font-weight: 400;
+        font-family: "Nunito", sans-serif;
+        background: var(--black);
+        overflow-x: hidden;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 16px 40px;
+        background: rgba(10, 10, 10, 0.9);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+      }
+      .logo-lamplabs {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo-lamplabs img {
+        width: 80px;
+        height: 80px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 10px rgba(201, 168, 76, 0.35));
+      }
+      .logo-text {
+        font-family: "Nunito", sans-serif;
+        font-weight: 700;
+        font-size: 28px;
+        letter-spacing: -0.5px;
+      }
+      .logo-text .lamp {
+        color: var(--gold);
+        text-shadow:
+          0 0 6px rgba(170, 145, 77, 0.6),
+          0 0 12px rgba(136, 113, 50, 0.3);
+      }
+      .logo-text .labs {
+        color: var(--gold-light);
+        text-shadow:
+          0 0 6px rgba(201, 168, 76, 0.6),
+          0 0 12px rgba(201, 168, 76, 0.3);
+      }
+      .header-badge {
+        position: absolute;
+        right: 40px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: rgba(201, 168, 76, 0.55);
+      }
+
+      main {
+        height: 100vh;
+        display: flex;
+        padding-top: 74px;
+      }
+
+      .panel {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        cursor: pointer;
+        padding: 60px 48px;
+        flex: 1;
+        transition: flex 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+      }
+      main:has(.panel-store:hover) .panel-invite {
+        flex: 0.65;
+      }
+      main:has(.panel-invite:hover) .panel-store {
+        flex: 0.65;
+      }
+      main:has(.panel-store:hover) .panel-store {
+        flex: 1.35;
+      }
+      main:has(.panel-invite:hover) .panel-invite {
+        flex: 1.35;
+      }
+
+      .panel-store {
+        background: linear-gradient(
+          160deg,
+          #f5f0ff 0%,
+          #ffffff 55%,
+          #ede5ff 100%
+        );
+      }
+      .panel-store::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 20% 85%,
+            rgba(119, 35, 164, 0.13) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 80% 15%,
+            rgba(119, 35, 164, 0.07) 0%,
+            transparent 70%
+          );
+      }
+      .panel-invite {
+        background: linear-gradient(
+          160deg,
+          #fff7ed 0%,
+          #ffffff 55%,
+          #fff0dc 100%
+        );
+        border-left: 1px solid rgba(0, 0, 0, 0.07);
+      }
+      .panel-invite::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 80% 85%,
+            rgba(249, 115, 22, 0.13) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 20% 15%,
+            rgba(249, 115, 22, 0.07) 0%,
+            transparent 70%
+          );
+      }
+
+      .divider {
+        position: fixed;
+        top: 74px;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(0, 0, 0, 0.09) 20%,
+          rgba(0, 0, 0, 0.09) 80%,
+          transparent
+        );
+        z-index: 10;
+        pointer-events: none;
+      }
+      .divider-dot {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 46px;
+        height: 46px;
+        background: #111;
+        border: 1px solid rgba(201, 168, 76, 0.35);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        font-size: 17px;
+        box-shadow: 0 0 28px rgba(201, 168, 76, 0.18);
+        z-index: 11;
+        pointer-events: none;
+      }
+
+      .panel-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 28px;
+      }
+      .panel-logo img {
+        width: 100px;
+        height: 100px;
+        object-fit: contain;
+        transition:
+          transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+          filter 0.35s ease;
+      }
+      .panel-store .panel-logo img {
+        filter: drop-shadow(0 8px 24px rgba(119, 35, 164, 0.25));
+      }
+      .panel-invite .panel-logo img {
+        filter: drop-shadow(0 8px 24px rgba(249, 115, 22, 0.25));
+      }
+      .panel:hover .panel-logo img {
+        transform: scale(1.1) rotate(-4deg);
+      }
+      .panel-store:hover .panel-logo img {
+        filter: drop-shadow(0 14px 36px rgba(119, 35, 164, 0.4));
+      }
+      .panel-invite:hover .panel-logo img {
+        filter: drop-shadow(0 14px 36px rgba(249, 115, 22, 0.4));
+      }
+
+      .panel-logo-name {
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 30px;
+        letter-spacing: -0.5px;
+      }
+      .panel-store .lamp {
+        color: var(--indigo);
+      }
+      .panel-store .product {
+        color: var(--purple-dark);
+      }
+      .panel-invite .lamp {
+        color: var(--indigo);
+      }
+      .panel-invite .product {
+        color: var(--orange);
+      }
+
+      .panel-headline {
+        font-family: "DM Serif Display", serif;
+        font-size: clamp(26px, 3vw, 40px);
+        color: #1a1a2e;
+        text-align: center;
+        line-height: 1.15;
+        margin-bottom: 14px;
+        transition: transform 0.3s ease;
+      }
+      .panel:hover .panel-headline {
+        transform: translateY(-3px);
+      }
+
+      .panel-desc {
+        font-weight: 400;
+        font-size: 15px;
+        text-align: center;
+        line-height: 1.65;
+        max-width: 290px;
+        margin-bottom: 36px;
+        color: #6b7280;
+      }
+
+      .panel-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 32px;
+        border-radius: 100px;
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+        font-size: 15px;
+        border: none;
+        cursor: pointer;
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        color: white;
+      }
+      .panel-store .panel-cta {
+        background: var(--purple);
+        box-shadow: 0 4px 20px rgba(119, 35, 164, 0.28);
+      }
+      .panel-store:hover .panel-cta {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 36px rgba(119, 35, 164, 0.45);
+      }
+      .panel-invite .panel-cta {
+        background: var(--orange);
+        box-shadow: 0 4px 20px rgba(249, 115, 22, 0.28);
+      }
+      .panel-invite:hover .panel-cta {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 36px rgba(249, 115, 22, 0.45);
+      }
+
+      .cta-arrow {
+        transition: transform 0.25s ease;
+        display: inline-block;
+      }
+      .panel:hover .cta-arrow {
+        transform: translateX(4px);
+      }
+
+      .features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 32px;
+      }
+      .feature-pill {
+        padding: 6px 14px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+      .panel-store .feature-pill {
+        background: rgba(119, 35, 164, 0.08);
+        color: var(--purple-dark);
+        border: 1px solid rgba(119, 35, 164, 0.15);
+      }
+      .panel-invite .feature-pill {
+        background: rgba(249, 115, 22, 0.08);
+        color: var(--orange-dark);
+        border: 1px solid rgba(249, 115, 22, 0.15);
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+        padding: 12px;
+        background: rgba(10, 10, 10, 0.92);
+        border-top: 1px solid rgba(201, 168, 76, 0.1);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.28);
+        letter-spacing: 0.5px;
+        z-index: 100;
+      }
+      footer span {
+        color: var(--gold);
+      }
+
+      @media (max-width: 640px) {
+        main {
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
+        }
+        .divider,
+        .divider-dot {
+          display: none;
+        }
+        .panel {
+          padding: 52px 28px;
+          border-left: none !important;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .header-badge {
+          display: none;
+        }
+        .panel-logo img {
+          width: 84px;
+          height: 84px;
+        }
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .panel-logo {
+        animation: fadeUp 0.7s ease both;
+      }
+      .panel-headline {
+        animation: fadeUp 0.7s 0.1s ease both;
+      }
+      .panel-desc {
+        animation: fadeUp 0.7s 0.2s ease both;
+      }
+      .panel-cta {
+        animation: fadeUp 0.7s 0.3s ease both;
+      }
+      .features {
+        animation: fadeUp 0.7s 0.4s ease both;
+      }
+      @keyframes headerIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      header {
+        animation: headerIn 0.5s ease both;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="#" class="logo-lamplabs">
+        <img src="logo_lamplabs.webp" alt="LampLabs" />
+        <div class="logo-text">
+          <span class="lamp">Lamp</span><span class="labs">Labs</span>
+        </div>
+      </a>
+    </header>
+
+    <main>
+      <a
+        class="panel panel-store"
+        href="https://lampstore.com.br"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="panel-logo">
+          <img src="logo_lampstore.webp" alt="LampStore" />
+          <div class="panel-logo-name">
+            <span class="lamp">Lamp</span><span class="product">Store</span>
+          </div>
+        </div>
+        <h2 class="panel-headline">
+          Sua loja virtual,<br />pronta para vender
+        </h2>
+        <p class="panel-desc">
+          Crie e gerencie sua loja online com simplicidade. Do catálogo ao
+          checkout, tudo em um só lugar.
+        </p>
+        <span class="panel-cta"
+          >Acessar LampStore <span class="cta-arrow">→</span></span
+        >
+        <div class="features">
+          <span class="feature-pill">Catálogo de produtos</span>
+          <span class="feature-pill">Checkout integrado</span>
+          <span class="feature-pill">Gestão de pedidos</span>
+        </div>
+      </a>
+
+      <a
+        class="panel panel-invite"
+        href="https://lampinvite.com.br"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <div class="panel-logo">
+          <img src="logo_lampinvite.webp" alt="LampInvite" />
+          <div class="panel-logo-name">
+            <span class="lamp">Lamp</span><span class="product">Invite</span>
+          </div>
+        </div>
+        <h2 class="panel-headline">Convites digitais<br />que impressionam</h2>
+        <p class="panel-desc">
+          Crie convites personalizados para qualquer evento. Compartilhe, colete
+          confirmações e celebre.
+        </p>
+        <span class="panel-cta"
+          >Acessar LampInvite <span class="cta-arrow">→</span></span
+        >
+        <div class="features">
+          <span class="feature-pill">Convites personalizados</span>
+          <span class="feature-pill">Confirmação de presença</span>
+          <span class="feature-pill">Compartilhamento fácil</span>
+        </div>
+      </a>
+    </main>
+
+    <footer><span>LampLabs</span> © 2026 · Todos os direitos reservados</footer>
+  </body>
+</html>
